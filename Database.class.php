@@ -63,7 +63,8 @@ class Database
 		return $this->conn->prepare($value);
 	}
 
- 	public function insert_id(){
+ 	public function insert_id()
+ 	{
         return $this->conn->insert_id;
     }
 
