@@ -18,23 +18,23 @@ class Crud extends Database
 	}
 
 	/**
-	* Select Method ! 
-		call this method 
-		$cru -> select('table_name',[
-			'select'=> 'first_name last_name',
-			'where'=>['lname'=>'first','first'=>'last','fee'=>'best'],
-			'order_by' => 'age',
-			'start'=> '10',
-			'limit'=>'15',
-			'return_type'=>'all | count | single'
-		]);
-
-		return_type = all 
-		while ($myrow = $result->fetch_assoc()) {
-		    	echo '<hr />';
-       		 	var_dump($myrow);
-      	}				
-	*/
+    * Select Method ! 
+    *   call this method 
+    *   $cru -> select('table_name',[
+    *       'select'=> 'first_name last_name',
+    *       'where'=>['lname'=>'first','first'=>'last','fee'=>'best'],
+    *       'order_by' => 'age',
+    *       'start'=> '10',
+    *       'limit'=>'15',
+    *       'return_type'=>'all | count | single'
+    *   ]);
+    * 
+    *   return_type = all 
+    *   while ($myrow = $result->fetch_assoc()) {
+    *           echo '<hr />';
+    *           var_dump($myrow);
+    *   }               
+    */
 
 	public function select($table, $conditions = []){
 
@@ -89,15 +89,15 @@ class Crud extends Database
 
 	/**
 	* Insert Method! 
-		call this method 
-        $userData = array(
-            'uname' => ['Jeesk', 's'],
-            'email' => ['jees@gmail.com', 's'],
-            'pass' => ['9633450433', 's'],
-            'first_name'=>['Jees','s'],
-            'last_name'=>['K Denny','s']
-        );
-        $hello = $cru ->insert('members',$userData);
+	*	call this method 
+    *   $userData = array(
+    *        'uname' => ['Jeesk', 's'],
+    *        'email' => ['jees@gmail.com', 's'],
+    *        'pass' => ['9633450433', 's'],
+    *        'first_name'=>['Jees','s'],
+    *        'last_name'=>['K Denny','s']
+    *    );
+    *    $hello = $cru ->insert('members',$userData);
 	*/
 	public function insert($table,$data){
 		if(!empty($data) && is_array($data)){
