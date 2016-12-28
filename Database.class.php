@@ -1,8 +1,17 @@
 <?php
-
 /**
-* Databsae Config
-*/
+ * 
+ * Databsae Config! Please Make Your Configuration changed below 
+ * add Host name
+ * add username to connect mysql 
+ * add password to connect mysql
+ * add database name
+ *
+ * @author  Jees K Denny
+ * @version 1.0, 28/12/16
+ * @since   28/12/16
+ */
+
 class Database
 {
 	private $conn;

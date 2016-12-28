@@ -1,8 +1,14 @@
 <?php
-	require_once 'Database.class.php';
 /**
-* Select , Insert , Update , Delete Handles Here! 
-*/
+ * 
+ * Select , Insert , Update , Delete Handles Here! 
+ *
+ * @author  Jees K Denny
+ * @version 1.0, 28/12/16
+ * @since   28/12/16
+ */
+require_once 'Database.class.php';
+
 class Crud extends Database
 {
 	private $db;
