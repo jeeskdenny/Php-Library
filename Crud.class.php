@@ -44,26 +44,32 @@ class Crud extends Database
 
 	public function select($table, $conditions = []){
 
-		$sql = 'SELECT ';
-		$sql .= array_key_exists("select",$conditions)?$conditions['select']:'*';
+        $sql = 'SELECT ';
+        $sql .= array_key_exists("select",$conditions)?$conditions['select']:'*';
         $sql .= ' FROM '.$table;
-        if(array_key_exists("where",$conditions)){
+        
+        if(array_key_exists("where",$conditions))
+        {
             $sql .= ' WHERE ';
             $i = 0;
-            foreach($conditions['where'] as $key => $value){
+            foreach($conditions['where'] as $key => $value)
+            {
                 $pre = ($i > 0)?' AND ':'';
                 $sql .= $pre.$key." = '".$value."'";
                 $i++;
             }
         }
 
-        if(array_key_exists("order_by",$conditions)){
+        if(array_key_exists("order_by",$conditions))
+        {
             $sql .= ' ORDER BY '.$conditions['order_by']; 
         }
 
-        if(array_key_exists("start",$conditions) && array_key_exists("limit",$conditions)){
+        if(array_key_exists("start",$conditions) && array_key_exists("limit",$conditions))
+        {
             $sql .= ' LIMIT '.$conditions['start'].','.$conditions['limit']; 
-        }elseif(!array_key_exists("start",$conditions) && array_key_exists("limit",$conditions)){
+        }elseif(!array_key_exists("start",$conditions) && array_key_exists("limit",$conditions))
+        {
             $sql .= ' LIMIT '.$conditions['limit']; 
         }
 
@@ -72,8 +78,10 @@ class Crud extends Database
         	$query->execute();
 		    $result = $query->get_result();
 
-	        if(array_key_exists("return_type",$conditions) && $conditions['return_type'] != 'all'){
-	            switch($conditions['return_type']){
+	        if(array_key_exists("return_type",$conditions) && $conditions['return_type'] != 'all')
+            {
+	            switch($conditions['return_type'])
+                {
 	                case 'count':
 	                    $data = $result->num_rows;
 	                    break;
@@ -84,7 +92,8 @@ class Crud extends Database
 	                    $data = '';
 	            }
 	        }else{
-	            if($result->num_rows > 0){
+	            if($result->num_rows > 0)
+                {
 	                $data = $result;
 	                return $data;
 	            }
@@ -131,7 +140,8 @@ class Crud extends Database
         		$paramBind='';
         		$valueBind=Array(); 
 
-        		foreach($data as $key=>$val){
+        		foreach($data as $key=>$val)
+                {
 	                $valueBind[]= $val[0];
 	                $paramBind .= $val[1]?$val[1]:'s';
             	}
@@ -139,7 +149,8 @@ class Crud extends Database
 
             	$result_params= array_merge($paramBindArray,$valueBind);
 
-            	foreach ($result_params as $key => $value) {
+            	foreach ($result_params as $key => $value) 
+                {
             		$tmp[]= &$result_params[$key];
             	}
            
