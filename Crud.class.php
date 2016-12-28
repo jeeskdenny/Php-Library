@@ -151,8 +151,16 @@ class Crud extends Database
 
     /**
     * Update Method! 
-        call this method 
-        
+    *   call this method 
+    *    $updateData = array(
+    *        'first_name'=>['bla','s']
+    *       );
+    *
+    *    $whereData = array(
+    *        'uname'=>['jees','s'],
+    *        'pass'=>['sorry','s']
+    *        );
+    *    $name = $cru->update('members', $updateData , $whereData);
     */	
     public function update($table,$data,$conditions){
         $colvalSet = '';
