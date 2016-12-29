@@ -46,12 +46,30 @@
     */
     public function login($table,$username,$password)
     {	
-    	$fullArray=array_merge($username,$password);
-    	$result = $this->cru->select( $table,[
-          'where'=> $fullArray,
-          'return_type'=>'all'
+    	$username_key=implode('', array_keys($username));
+    	$username_value=implode('', $username);
+    	$result=$this->cru->select($table,[
+          	'where'=>[$username_key=>$username_value],
+          	'return_type'=>'all'
        	]);
- 		return $result;
+       	if($result){
+       		if($result->num_rows==1)
+	       	{
+	       		print_r($result);
+		    	$myrow = $result->fetch_assoc();
+		    	$password_key=implode('', array_keys($password));
+		    	$password_value=implode('', $password);
+		    	if(password_verify($password_value,$myrow[$password_key])) {
+				    return true;
+				} else {
+				    return false;
+				}
+	       	}else{
+	       		return false;
+	       	}
+       	}else{
+       		return false;
+       	}
     }
     
     /*
