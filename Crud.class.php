@@ -251,4 +251,63 @@ class Crud extends Database
         }
     }    
 
+    /**
+    * Delete Method! 
+    *   call this method 
+    *
+    *       $whereData = array(
+    *           'id'=>['1','i'],
+    *           'first_name'=> ['Jees','s']
+    *           );
+    *
+    *       $delte=$cru->delete('members',$whereData); 
+    *       $delte=$cru->delete('members'); --all data will deleted in the table
+    */
+
+    public function delete($table,$where=false){
+        $wherevalue='';
+        $sql = "DELETE FROM ". $table;
+        if($where==true)
+        {
+            if(!empty($where)&& is_array($where))
+            {
+                $wherevalue .=' WHERE ';
+                $i = 0;
+                foreach($where as $key => $value)
+                {
+                    $pre = ($i > 0)?' AND ':'';
+                    $wherevalue .= $pre.$key."= ? ";
+                    $i++;
+                }
+                $sql.= $wherevalue;
+            }  
+        }
+        if($query = $this->db->prepare($sql))
+        {   
+            if($where==true)
+            {
+                $paramBind='';
+                foreach($where as $key=>$val)
+                {
+                    $valueBind[]= $val[0];
+                    $paramBind .= $val[1]?$val[1]:'s';
+                }
+                $bindType[]= $paramBind ;
+                $fullArray = array_merge($bindType,$valueBind);
+                print_r($fullArray);
+                foreach ($fullArray as $key => $value) {
+                    $tmp[]= &$fullArray[$key];
+                }
+                $ref = new ReflectionClass('mysqli_stmt'); 
+                $method = $ref->getMethod("bind_param"); 
+                $method->invokeArgs($query,$tmp);
+            }
+
+            $delete = $query->execute(); 
+            return $delete?$delete:false;
+        }else{
+            return false;
+        }
+    }    
+
 }
