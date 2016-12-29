@@ -4,7 +4,8 @@
 --------------
 	
  	- Database : Database Configuration Files
- 	- Crud : Create | Read | Update | Delete Sql queries
-
+ 	- Crud : sql query Handles here [ Create | Read | Update | Delete ] 
+ 	- Session : Session Data processes. [ start | get | set | display ] 
+ 	- Authentication : User Authentication [ login | createUser ]
  	
  	 
