@@ -179,71 +179,76 @@ class Crud extends Database
     *        );
     *    $name = $cru->update('members', $updateData , $whereData);
     */	
-    public function update($table,$data,$conditions){
-        $colvalSet = '';
-        $whereSql = '';
-        $i = 0;
-        $sql= "UPDATE ".$table." SET ";
-    
-        if(!array_key_exists('modified',$data)){
-            $data['modified'] = [date("Y-m-d H:i:s"),'s'];
-        }
-        foreach($data as $key=>$val){
-            $pre = ($i > 0)?', ':'';
-            $colvalSet .= $pre.$key."= ? ";
-            $i++;
-        }
-        $sql.=$colvalSet;
-
-        if(!empty($conditions)&& is_array($conditions)){
-            $whereSql .= ' WHERE ';
+    public function update($table,$set,$where){
+        if(!empty($set) && is_array($set)){
+            $setvalue = '';
+            $wherevalue = '';
+            $sql= "UPDATE ".$table." SET ";
+        
+            if(!array_key_exists('modified',$set)){
+                $set['modified'] = [date("Y-m-d H:i:s"),'s'];
+            }
             $i = 0;
-            foreach($conditions as $key => $value){
-                $pre = ($i > 0)?' AND ':'';
-                $whereSql .= $pre.$key." = ? ";
+            foreach($set as $key=>$val){
+                $pre = ($i > 0)?', ':'';
+                $setvalue .= $pre.$key."= ? ";
                 $i++;
             }
-            $sql.=$whereSql;
-        }
+            $sql.=$setvalue;
 
-        if($query = $this->db->prepare($sql))
-        {
-            $paramBind='';
-            $paramBindCond='';
+            if(!empty($where)&& is_array($where)){
+                $wherevalue .= ' WHERE ';
+                $i = 0;
+                foreach($where as $key => $value){
+                    $pre = ($i > 0)?' AND ':'';
+                    $wherevalue .= $pre.$key." = ? ";
+                    $i++;
+                }
+                $sql.=$wherevalue;
+            }
 
-            foreach($data as $key=>$val)
+            if($query = $this->db->prepare($sql))
             {
-                $valueBind[]= $val[0];
-                $paramBind .= $val[1]?$val[1]:'s';
-            
+                $paramBind='';
+                $paramBindCond='';
+
+                foreach($set as $key=>$val)
+                {
+                    $valueBind[]= $val[0];
+                    $paramBind .= $val[1]?$val[1]:'s';
+                
+                }
+         
+                foreach($where as $key=>$val)
+                {
+                    $valueBindCond[]= $val[0];
+                    $paramBindCond .= $val[1]?$val[1]:'s';
+                }
+
+                $valueType= array_merge($valueBind,$valueBindCond);
+
+                $bindType[]= $paramBind . $paramBindCond;
+
+                $fullArray = array_merge($bindType,$valueType);
+
+                foreach ($fullArray as $key => $value) {
+                    $tmp[]= &$fullArray[$key];
+                }
+                $ref = new ReflectionClass('mysqli_stmt'); 
+                $method = $ref->getMethod("bind_param"); 
+                $method->invokeArgs($query,$tmp);
+                $update = $query->execute(); 
+
+                var_dump($update);
+
+                return $update?$this->db->affected_rows():false;
+                
+            }else{
+                return false;
             }
-     
-            foreach($conditions as $key=>$val)
-            {
-                $valueBindCond[]= $val[0];
-                $paramBindCond .= $val[1]?$val[1]:'s';
-            }
-
-            $valueType= array_merge($valueBind,$valueBindCond);
-
-            $bindType[]= $paramBind . $paramBindCond;
-
-            $fullArray = array_merge($bindType,$valueType);
-
-            foreach ($fullArray as $key => $value) {
-                $tmp[]= &$fullArray[$key];
-            }
-            $ref = new ReflectionClass('mysqli_stmt'); 
-            $method = $ref->getMethod("bind_param"); 
-            $method->invokeArgs($query,$tmp);
-            $update = $query->execute(); 
-
-            var_dump($update);
-
-            return $update?$this->db->affected_rows():false;
-            
+        }else{
+            return false;
         }
-
     }    
 
 }
