@@ -55,7 +55,6 @@
        	if($result){
        		if($result->num_rows==1)
 	       	{
-	       		print_r($result);
 		    	$myrow = $result->fetch_assoc();
 		    	$password_key=implode('', array_keys($password));
 		    	$password_value=implode('', $password);
