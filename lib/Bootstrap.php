@@ -48,9 +48,12 @@ class Bootstrap
 						}else{
 							$controller_ob->{$this->method}();
 						}
+
+					}else{
+						require 'controllers/' . $this->error_controller . '.php';
+						$this->error_controller = new $this->error_controller;
+						return false;
 					}
-				}else{
-					$controller_ob->{$this->method}();
 				}
 			}else{
 				require 'controllers/' . $this->error_controller . '.php';
