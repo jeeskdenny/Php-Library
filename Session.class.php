@@ -34,7 +34,15 @@ class Session
 	
 	public static function set($key, $value)
 	{
-		$_SESSION[$key]=$value;
+		if(self::$sessionStarted == false)
+		{
+			self::start();
+			$_SESSION[$key]=$value;
+			
+		}else{
+
+			$_SESSION[$key]=$value;
+		}
 	}
 
 	public static function get($key, $secondKey= false)
@@ -62,7 +70,7 @@ class Session
 		echo '</pre>';
 	}
 
-	public static function destroy($key, $value)
+	public static function destroy()
 	{
 		if(self::$isSessionStart==true){
 			session_unset();
