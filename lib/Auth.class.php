@@ -1,6 +1,15 @@
 <?php
+/**
+ * 
+ * User Authentication Handles Here! 
+ *
+ * @author  Jees K Denny
+ * @version 1.0, 28/12/16
+ * @since   28/12/16
+ */
  require_once 'Database.class.php';
  require_once 'Crud.class.php';
+ require_once 'Session.class.php';
 
  class Auth 
  {
@@ -95,7 +104,7 @@
 	            {
 	            	$val[0]= $this->passHash($val[0]);
 	           	}
-	           	$user = $this->cru->insert('members',array_merge($data,$password));
+	           	$user = $this->cru->insert($table,array_merge($data,$password));
 	           	if($user){
 	           		return $user;
 	           	}else{
