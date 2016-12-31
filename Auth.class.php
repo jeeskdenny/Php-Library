@@ -109,5 +109,9 @@
     	}	
     }
 
+    public function logout()
+    {
+    	
+    }
 
  }

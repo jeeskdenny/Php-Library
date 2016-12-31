@@ -308,6 +308,32 @@ class Crud extends Database
         }else{
             return false;
         }
-    }    
+    } 
+
+    public function findPrimaryCol($table)
+    {   
+        if($table)
+        {
+            $sql = "SHOW KEYS FROM ". $table ." WHERE Key_name = 'PRIMARY'";
+
+            if($query = $this->db->prepare($sql))
+            {
+                $query->execute();
+                $result =  $query->get_result();
+                $myrow = $result->fetch_assoc();
+                if($myrow['Column_name'])
+                {
+                    return $myrow['Column_name'];
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+
+    }   
 
 }
