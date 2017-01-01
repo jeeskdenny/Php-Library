@@ -310,6 +310,14 @@ class Crud extends Database
         }
     } 
 
+    /**
+    * FindPrimaryColumn Name method
+    *   call this method 
+    *
+    *       $name = findPrimaryCol($table_name);
+    *
+    */
+
     public function findPrimaryCol($table)
     {   
         if($table)
