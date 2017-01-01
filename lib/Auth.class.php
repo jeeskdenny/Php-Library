@@ -118,9 +118,30 @@
     	}	
     }
 
-    public function logout()
+    /*
+    *UpdateToken Method. Usually Use Inside logout. 
+    *Cookie Token Updated with random number encrypted with sha256!
+    *	Call Login method
+    *	$auth = new Auth();
+    *	$data= ['id'=> ['1','i']];
+	*	$auth->updateToken('members','token',$data);  
+	*
+    */
+    
+
+    public function updateToken($table,$update_field_name,$data)
     {
-    	
+    	$upd_key=implode('', array_keys($data));
+
+    	$random_number = $this->random(50);
+		$hashdata = hash('sha256', $random_number);
+		
+		$updateData = array(
+			$update_field_name=>[ $hashdata,'s']
+			);
+
+		$name = $this->cru->update($table, $updateData , $data);
+
     }
 
  }
