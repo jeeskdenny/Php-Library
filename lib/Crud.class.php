@@ -239,8 +239,6 @@ class Crud extends Database
                 $method->invokeArgs($query,$tmp);
                 $update = $query->execute(); 
 
-                var_dump($update);
-
                 return $update?$this->db->affected_rows():false;
                 
             }else{
@@ -294,7 +292,6 @@ class Crud extends Database
                 }
                 $bindType[]= $paramBind ;
                 $fullArray = array_merge($bindType,$valueBind);
-                print_r($fullArray);
                 foreach ($fullArray as $key => $value) {
                     $tmp[]= &$fullArray[$key];
                 }
