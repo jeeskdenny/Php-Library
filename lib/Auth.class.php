@@ -144,4 +144,43 @@
 
     }
 
+    /*
+    *LoginviaToken Method. 
+    *If There is No Session data found, 
+    *You can check cookies and token for authorization.
+    *	Call loginviaToken method
+    *		$auth = new Auth();
+    *		$username=['email'=>$_COOKIE['user_name']};
+	*		$password=['token'=>$_COOKIE['Cookie_token']];
+	*		$myrow=$auth->loginviaToken('members',$username,$password);
+	*
+    */
+
+    public function loginviaToken($table,$username,$token)
+    {	
+    	$token_key=implode('', array_keys($token));
+    	$token_value=implode('', $token);
+
+    	$username_key=implode('', array_keys($username));
+    	$username_value=implode('', $username);
+
+    	$hashdata = hash('sha256', $token_value);
+
+    	$result=$this->cru->select($table,[
+           'where'=>[$username_key=>$username_value,$token_key=>$hashdata],
+           'return_type'=>'all'
+      	]);
+    	if($result)
+    	{
+    		if($result->num_rows==1)
+	       	{
+		    	$myrow = $result->fetch_assoc();
+		    	$pricolum = $this->cru->findPrimaryCol($table);
+		    	if($pricolum){
+				    return $myrow;
+				}   	
+		    }	
+    	}
+    }	
+
  }
